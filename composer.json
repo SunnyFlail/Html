@@ -1,0 +1,22 @@
+{
+    "name": "sunnyflail/html-abstraction",
+    "description": "A simple HTML abstraction layer with basic Form API",
+    "type": "library",
+    "require": {
+        "php": "^8",
+        "psr/http-message": "^1.0"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^9.5"
+    },
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "SunnyFlail",
+            "email": "sunny.flail@gmail.com"
+        }
+    ],
+    "autoload": {
+        "SunnyFlail\\Html\\" : "src"
+    }
+}
