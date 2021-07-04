@@ -2,8 +2,6 @@
 
 namespace SunnyFlail\Html\Elements;
 
-use SunnyFlail\Html\Interfaces\IContainerElement;
-use SunnyFlail\Html\Interfaces\IElement;
 use SunnyFlail\Html\Interfaces\IFieldElement;
 use SunnyFlail\Html\Interfaces\IFileField;
 use SunnyFlail\Html\Interfaces\IFormElement;
@@ -41,6 +39,7 @@ abstract class FormElement implements IFormElement
         $this->formName = $formName ?? lcfirst(
             (new ReflectionClass(static::class))->getShortName()
         );
+
     }
 
     public function getName(): string
@@ -88,6 +87,11 @@ abstract class FormElement implements IFormElement
         return $valid ?? null;
     }
 
+    public function withFields(IFieldElement ...$fields)
+    {
+        $this->fields = $fields;
+    }
+
     /**
      * Returns a html string representation of form
      * 
@@ -106,7 +110,12 @@ abstract class FormElement implements IFormElement
         $attributes['method'] = $this->formMethod;
 
         $elements = $this->fields;
-        $elements[] = new ButtonElement("submit", $this->buttonAttributes, $this->buttonElements, $this->buttonText);
+        $elements[] = new ButtonElement(
+            type: "submit",
+            attributes: $this->buttonAttributes,
+            text: $this->buttonText,
+            nestedElements: $this->buttonElements
+        );
 
         return '<form' . $this->getAttributeString($attributes) . '>' . implode('', $elements) . '</form>';
     }

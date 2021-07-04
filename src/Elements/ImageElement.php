@@ -16,6 +16,7 @@ final class ImageElement implements IElement
         array $attributes = []
     ) {
         $attributes["src"] = $src;
+        $attributes["alt"] = $alt;
         $this->attributes = $attributes;
     }
 

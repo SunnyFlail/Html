@@ -13,10 +13,15 @@ interface IFormElement extends IElement
     public function getName(): string;
 
     /**
-     * Resolves the form - provides fields with their values
+     * Resolves the form
      * 
      * @return bool If provided values fit in with 
      */
     public function resolveForm(ServerRequestInterface $request): bool;
+
+    /**
+     * Basic function called during setup of the form
+     */
+    public function withFields(IFieldElement ...$fields);
 
 }

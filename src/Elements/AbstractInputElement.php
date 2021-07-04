@@ -14,33 +14,20 @@ abstract class AbstractInputElement implements IElement
         string $type,
         ?string $name,
         ?array $classes = null,
-        protected bool $required,
+        bool $required = true,
         array $attributes = [],
     ) {
         $attributes["type"] = $type;
         $attributes["name"] = $name;
         $attributes["classes"] = $classes;
+        $attributes["required"] = $required;
 
         $this->attributes = $attributes;
     }
 
-    public function isRequired(): bool
-    {
-        return $this->required;
-    }
-
-    public function withName(string $name): AbstractInputElement
-    {
-        $this->attributes["name"] = $name;
-        return $this;
-    }
-
     public function __toString(): string
     {
-        $attributes = $this->attributes;
-        $attributes["required"] = $this->required;
-
-        return '<input' . $this->getAttributeString($attributes) . '>';
+        return '<input' . $this->getAttributeString($this->attributes) . '>';
     }
 
 }

@@ -2,7 +2,7 @@
 
 namespace SunnyFlail\Html\Interfaces;
 
-interface IFieldElement extends IContainerElement, IInputElement
+interface IFieldElement extends IInputElement
 {
 
     public function resolve(array $values): bool;
@@ -24,6 +24,6 @@ interface IFieldElement extends IContainerElement, IInputElement
 
     public function isValid(): bool;
 
-    public function getInputElement(): IElement;
-
+    public function getFullName(): string;
+    
 }

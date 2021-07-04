@@ -2,9 +2,9 @@
 
 namespace SunnyFlail\Html\Elements;
 
-use SunnyFlail\Html\Elements\AbstractContainerElement;
+use SunnyFlail\Html\Elements\ContainerElement;
 
-final class AnchorElement extends AbstractContainerElement
+final class AnchorElement extends ContainerElement
 {
     public function __construct(
         string $href,

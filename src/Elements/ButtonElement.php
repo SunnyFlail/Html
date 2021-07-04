@@ -2,7 +2,7 @@
 
 namespace SunnyFlail\Html\Elements;
 
-final class ButtonElement extends AbstractContainerElement
+final class ButtonElement extends ContainerElement
 {
 
     public function __construct(

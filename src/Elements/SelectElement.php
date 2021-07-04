@@ -7,7 +7,7 @@ use InvalidArgumentException;
 use SunnyFlail\Html\Traits\ElementTrait;
 use SunnyFlail\Html\Interfaces\IInputElement;
 
-class SelectElement implements IInputElement
+final class SelectElement implements IInputElement
 {
 
     use ElementTrait;
@@ -19,16 +19,17 @@ class SelectElement implements IInputElement
         string $name,
         private bool $multiple = false,
         array $attributes = [],
-        private array $optionAttributes = []
+        private array $optionAttributes = [],
+        private array $availableOptions = [],
+        private string|array $value
     ) {
+        $attributes["name"] = $name;
         $this->attributes = $attributes;
         $this->options = [];
     }
 
     /**
      * Updates elements values for rendering
-     * 
-     * MUST be called AFTER SelectElement::withOptions
      * 
      * @param mixed $value
      * 
@@ -39,24 +40,10 @@ class SelectElement implements IInputElement
      */
     public function withValue(mixed $value): IInputElement
     {
-        if (!$this->multiple) {
-            if (is_array($value)){
-                throw new InvalidArgumentException(
-                    "Select without multiple attribute can only have one selected vale!"
-                );
-            }
-            if (!isset($this->options[$value])) {
-                throw new OutOfRangeException(
-                    sprintf(
-                        "SelectElement with name %s doesn't have option with value %s!",
-                        $this->name,
-                        $value
-                    )
-                );
-            }
-
-            $this->options[$value]->setSelected();
-            return $this;
+        if (!$this->multiple && is_array($value)) {
+            throw new InvalidArgumentException(
+                "Select without multiple attribute can only have one selected value!"
+            );
         }
 
         if (!is_array($value)) {
@@ -65,19 +52,6 @@ class SelectElement implements IInputElement
             );
         }
 
-        foreach ($value as $val) {
-            if (!isset($this->options[$val])) {
-                throw new OutOfRangeException(
-                    sprintf(
-                        "SelectElement with name %s doesn't have option with value %s!",
-                        $this->name,
-                        $value
-                    )
-                );
-            }
-
-            $this->options[$val]->setSelected();
-        }
         return $this;
     }
 
@@ -88,15 +62,9 @@ class SelectElement implements IInputElement
      * 
      * @return SelectElement
      */
-    public function withOptions(array $values): SelectElement
+    public function withOptions(array $options): SelectElement
     {
-        foreach ($values as $text => $value) {
-            if (is_numeric($text)) {
-                $text = $value;
-            }
-            $this->options[$value] = new OptionElement($value, $text, $this->optionAttributes);
-        }
-        
+        $this->options = $options;
         return $this;
     }
 
@@ -105,7 +73,47 @@ class SelectElement implements IInputElement
         $attributes = $this->attributes;
         $attributes["multiple"] = $this->multiple;
 
-        return '<select' . $this->getAttributeString($attributes) . '>' . implode('', $this->options) . '</select>';
+        $options = [];
+
+        foreach ($this->options as $label => $value) {
+            /** Check if this is a group */
+            if (is_array($value)) {
+                $options[] = new ContainerElement(
+                    tag: 'optgroup',
+                    attributes: ['label' => $label],
+                    nestedElements: array_map(
+                        [$this, "createOption"],
+                        array_keys($value),
+                        $value
+                    )
+                );
+                continue;
+            }
+
+            $options[] = $this->createOption($label, $value);
+        }
+
+        return '<select' . $this->getAttributeString($attributes) . '>' . implode('', $options) . '</select>';
+    }
+
+    private function createOption(string $label, string $value): OptionElement
+    {
+        if (is_numeric($label)) {
+            $label = $value;
+        }
+
+        if ($this->multiple && is_array($this->value)) {
+            $selected = in_array($value, $this->value);
+        } else {
+            $selected = ($value === $this->value);
+        }
+
+        return new OptionElement(
+            value: $value,
+            optionText: $label,
+            attributes: $this->optionAttributes,
+            selected: $selected
+        );
     }
 
 }

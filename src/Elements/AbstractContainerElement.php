@@ -6,14 +6,14 @@ use SunnyFlail\Html\Interfaces\IContainerElement;
 use SunnyFlail\Html\Traits\ContainerElementTrait;
 use SunnyFlail\Html\Traits\ElementTrait;
 
-abstract class AbstractContainerElement implements IContainerElement
+class ContainerElement implements IContainerElement
 {
 
     use ElementTrait;
     use ContainerElementTrait;
 
     public function __construct(
-        protected string $tag,
+        protected string $tag = 'div',
         array $attributes,
         array $nestedElements
     ) {

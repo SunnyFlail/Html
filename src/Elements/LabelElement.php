@@ -2,11 +2,11 @@
 
 namespace SunnyFlail\Html\Elements;
 
-final class LabelElement extends AbstractContainerElement
+final class LabelElement extends ContainerElement
 {
 
     public function __construct(
-        string $for,
+        ?string $for = null,
         ?string $labelText = null,
         array $attributes = [],
         array $nestedElements = []

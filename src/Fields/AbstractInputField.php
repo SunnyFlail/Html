@@ -2,30 +2,19 @@
 
 namespace SunnyFlail\Html\Fields;
 
-use SunnyFlail\Html\Elements\BlockElement;
+use SunnyFlail\Html\Elements\ContainerElement;
 use SunnyFlail\Html\Elements\LabelElement;
 use SunnyFlail\Html\Elements\TextNodeElement;
-use SunnyFlail\Html\Interfaces\IFieldElement;
-use SunnyFlail\Html\Interfaces\IFormElement;
 use SunnyFlail\Html\Interfaces\IConstraint;
-use SunnyFlail\Html\Interfaces\IElement;
+use SunnyFlail\Html\Interfaces\IInputField;
 use SunnyFlail\Html\Traits\ContainerElementTrait;
-use SunnyFlail\Html\Traits\AttributeTrait;
-use SunnyFlail\Html\InvalidFieldException;
+use SunnyFlail\Html\Traits\FieldTrait;
 
-abstract class AbstractInputField implements IFieldElement
+abstract class AbstractInputField implements IInputField
 {
 
     use ContainerElementTrait;
-    
-    protected IFormElement $form;
-    protected bool $valid;
-    /** @var IConstraint[] $constraints */
-    protected array $constraints;
-    /** @var mixed $value */
-    protected $value;
-    /** @var string|null $error Message that is shown if this field is invalid */
-    protected ?string $error;
+    use FieldTrait;
 
     /**
      * 
@@ -35,51 +24,24 @@ abstract class AbstractInputField implements IFieldElement
      * @param string[] $errorMessages Array containing error messages
      * Indexes MUST be numeric strings
      * Index "-1" Is for message shown if no value was provided for a required field 
+     * @param IConstraint[] $constraints
      */
     public function __construct(
-        protected string $name,
-        protected bool $required = true,
+        string $name,
+        bool $required = true,
         protected array $errorMessages = [],
         protected array $wrapperAttributes = [],
         protected array $errorAttributes = [],
         protected ?string $labelText = null,
         protected array $labelAttributes = [],
-        array $nestedElements = []
+        array $nestedElements = [],
+        protected array $constraints = []
     ) {
+        $this->name = $name;
+        $this->required = $required;
         $this->error = null;
         $this->valid = false;
         $this->nestedElements = $nestedElements;
-    }
-
-    public function isValid(): bool
-    {
-        return $this->valid;
-    }
-
-    public function isRequired(): bool
-    {
-        return $this->required;
-    }
-
-    public function getName(): string
-    {
-        return $this->name;
-    }
-
-    public function getValue()
-    {
-        if (!$this->valid && $this->isRequired()) {
-            throw new InvalidFieldException(
-                sprintf("Tried to get value of an invalid field %s with name %s!", static::class, $this->name)
-            );
-        }
-
-        return $this->value;
-    }
-
-    public function getFullName(): string
-    {
-        return $this->form->getName() . '[' . $this->name . ']';
     }
 
     public function getId(): string
@@ -87,15 +49,10 @@ abstract class AbstractInputField implements IFieldElement
         return $this->form->getName() . "-"  . $this->name;
     }
 
-    public function withForm(IFormElement $form): IFieldElement
-    {
-        $this->form = $form;
-        return $this;
-    }
-
     public function resolve(array $values): bool
     {
         $value = $values[$this->getFullName()] ?? null;
+
         if ($value === null){
             if ($this->isRequired()) {
                 $this->error = $this->errorMessages["-1"] ?? "No value provided for field $this->name!";
@@ -114,18 +71,6 @@ abstract class AbstractInputField implements IFieldElement
         return $this->valid = true;
     }
 
-    public function withValue($value): IFieldElement
-    {
-        $this->value = $value;
-        return $this;
-    }
-
-    public function withError(string $error): IFieldElement
-    {
-        $this->error = $error;
-        return $this;
-    }
-
     public function __toString(): string
     {
         $inputId = $this->getId();
@@ -139,15 +84,18 @@ abstract class AbstractInputField implements IFieldElement
         ];
 
         if ($this->error) {
-            $elements[] = new BlockElement(
-                $this->errorAttributes,
-                [new TextNodeElement($this->error)]
+            $elements[] = new ContainerElement(
+                attributes: $this->errorAttributes,
+                nestedElements: [new TextNodeElement($this->error)]
             );
         }
         
         $elements = [...$elements, ...$this->nestedElements];
 
-        return new BlockElement($this->wrapperAttributes, $elements);
+        return new ContainerElement(
+            attributes: $this->wrapperAttributes,
+            nestedElements: $elements
+        );
     }
 
 

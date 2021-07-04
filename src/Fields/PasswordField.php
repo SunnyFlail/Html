@@ -2,12 +2,10 @@
 
 namespace SunnyFlail\Html\Fields;
 
-use SunnyFlail\Html\Constraints\EmailConstraint;
-use SunnyFlail\Html\Elements\BlockElement;
+use SunnyFlail\Html\Elements\ContainerElement;
 use SunnyFlail\Html\Elements\ButtonElement;
-use SunnyFlail\Html\Elements\PasswordElement;
+use SunnyFlail\Html\Elements\InputElement;
 use SunnyFlail\Html\Interfaces\IElement;
-use SunnyFlail\Html\Traits\RenderFieldTrait;
 
 final class PasswordField extends AbstractInputField
 {
@@ -23,7 +21,8 @@ final class PasswordField extends AbstractInputField
         array $errorAttributes = [],
         ?string $labelText = null,
         array $labelAttributes = [],
-        array $nestedElements = []
+        array $nestedElements = [],
+        array $constraints = []
     ) {
         parent::__construct(
             name: $name,
@@ -33,27 +32,31 @@ final class PasswordField extends AbstractInputField
             errorAttributes: $errorAttributes,
             labelText: $labelText,
             labelAttributes: $labelAttributes,
-            nestedElements: $nestedElements
+            nestedElements: $nestedElements,
+            constraints: $constraints
         );
 
         if ($this->withPeeper) {
             $this->peeperAttributes["data-button-type"] = "peeper";
         }
-
-        $this->constraints = [new EmailConstraint()];
     }
 
     public function getInputElement(): IElement
     {
+        $attributes = $this->inputAttributes;
+        if ($this->valid) {
+            $attributes["value"] = $this->value;
+        }
         if ($this->withPeeper) {
-            return new BlockElement(
-                [
+            return new ContainerElement(
+                attributes: [
                     "style" => "position: relative;"
                 ],
-                [
-                    new PasswordElement(
+                nestedElements: [
+                    new InputElement(
+                        type: "password",
                         name: $this->name,
-                        attributes: $this->inputAttributes
+                        attributes: $attributes
                     ),
                     new ButtonElement(
                         type: "button",
@@ -63,9 +66,10 @@ final class PasswordField extends AbstractInputField
             );
         }
 
-        return new PasswordElement(
+        return new InputElement(
+            type: "password",
             name: $this->name,
-            attributes: $this->inputAttributes
+            attributes: $attributes
         );
     }
 

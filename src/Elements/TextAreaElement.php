@@ -11,9 +11,12 @@ final class TextAreaElement implements IInputElement
     use ElementTrait;
 
     public function __construct(
-        
+        string $name,
+        private ?string $value = null,
+        array $attributes = []
     ) {
-
+        $attributes["name"] = $name;
+        $this->$attributes = $attributes;
     }
 
     public function withValue(mixed $value): IInputElement
