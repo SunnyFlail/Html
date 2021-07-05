@@ -13,8 +13,7 @@ use SunnyFlail\Html\Traits\FieldTrait;
 abstract class AbstractInputField implements IInputField
 {
 
-    use ContainerElementTrait;
-    use FieldTrait;
+    use ContainerElementTrait, FieldTrait;
 
     /**
      * 

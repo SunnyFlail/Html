@@ -13,6 +13,7 @@ final class SelectElement implements IInputElement
     use ElementTrait;
     
     /** @var OptionElement[] $options */
+    private array $options;
 
     public function __construct(
         string $name,
@@ -20,7 +21,6 @@ final class SelectElement implements IInputElement
         array $attributes = [],
         private array $optionAttributes = [],
         private array $availableOptions = [],
-        private array $options,
         private string|array|null $value = null
     ) {
         $attributes["name"] = $name;
@@ -51,8 +51,6 @@ final class SelectElement implements IInputElement
                 "Select with multiple attribute must have an array of values!"
             );
         }
-
-        $this->value = $value;
 
         return $this;
     }

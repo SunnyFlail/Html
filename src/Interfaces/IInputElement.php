@@ -9,5 +9,5 @@ interface IInputElement extends IElement
 {
 
     public function withValue(mixed $value): IInputElement;
-    
+
 }

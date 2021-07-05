@@ -24,6 +24,4 @@ interface IFieldElement extends IInputElement
 
     public function isValid(): bool;
 
-    public function getFullName(): string;
-    
 }

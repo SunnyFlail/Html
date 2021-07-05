@@ -9,8 +9,7 @@ use SunnyFlail\Html\Traits\ElementTrait;
 class ContainerElement implements IContainerElement
 {
 
-    use ElementTrait;
-    use ContainerElementTrait;
+    use ElementTrait, ContainerElementTrait;
 
     public function __construct(
         protected string $tag = 'div',

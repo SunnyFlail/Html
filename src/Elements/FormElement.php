@@ -16,6 +16,7 @@ abstract class FormElement implements IFormElement
 {
 
     use ElementTrait;
+    
     /**
      * @var IFieldElement $fields
      */

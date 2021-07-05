@@ -7,7 +7,7 @@ use SunnyFlail\Html\Interfaces\IConstraint;
 final class LesserThanConstraint implements IConstraint
 {
 
-    public function __construct(int|float $max) {}
+    public function __construct(private int|float $max) {}
 
     public function formValueValid($value): bool
     {

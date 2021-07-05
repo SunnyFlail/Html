@@ -10,7 +10,7 @@ use SunnyFlail\Html\Elements\LabelElement;
 use SunnyFlail\Html\Interfaces\IElement;
 use SunnyFlail\Html\Traits\RenderFieldTrait;
 
-final class TextField extends AbstractInputField
+final class InputField extends AbstractInputField
 {
 
     public function __construct(
