@@ -2,19 +2,15 @@
 
 namespace SunnyFlail\Html\Fields;
 
-use SunnyFlail\Html\Constraints\EmailConstraint;
-use SunnyFlail\Html\Elements\ContainerElement;
-use SunnyFlail\Html\Elements\EmailElement;
 use SunnyFlail\Html\Elements\InputElement;
-use SunnyFlail\Html\Elements\LabelElement;
 use SunnyFlail\Html\Interfaces\IElement;
-use SunnyFlail\Html\Traits\RenderFieldTrait;
 
 final class InputField extends AbstractInputField
 {
 
     public function __construct(
         string $name = "text",
+        protected string $type = "text",
         bool $required = true,
         array $errorMessages = [],
         protected array $inputAttributes = [],
@@ -41,6 +37,7 @@ final class InputField extends AbstractInputField
     public function getInputElement(): IElement
     {
         return new InputElement(
+            type: $this->type,
             name: $this->getFullName(),
             attributes: $this->inputAttributes
         );

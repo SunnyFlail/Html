@@ -1,71 +1,41 @@
 <?php
 
-namespace SunnyFlail\Html\Elements;
+namespace SunnyFlail\Html\Fields;
 
 use OutOfRangeException;
 use InvalidArgumentException;
+use SunnyFlail\Html\Elements\SelectElement;
+use SunnyFlail\Html\Interfaces\IFieldElement;
 use SunnyFlail\Html\Traits\ElementTrait;
 use SunnyFlail\Html\Interfaces\IInputElement;
+use SunnyFlail\Html\Interfaces\ISelectableField;
+use SunnyFlail\Html\Traits\FieldTrait;
+use SunnyFlail\Html\Traits\SelectableTrait;
 
-final class SelectElement implements IInputElement
+final class SelectField implements ISelectableField, IFieldElement
 {
 
-    use ElementTrait;
+    use ElementTrait, SelectableTrait, FieldTrait;
     
     /** @var OptionElement[] $options */
     private array $options;
 
     public function __construct(
         string $name,
-        private bool $multiple = false,
+        protected bool $multiple = false,
         array $attributes = [],
-        private array $optionAttributes = [],
-        private array $availableOptions = [],
-        private string|array|null $value = null
+        protected array $optionAttributes = [],
+        protected array $availableOptions = [],
+        protected string|array|null $value = null
     ) {
         $attributes["name"] = $name;
         $this->attributes = $attributes;
         $this->options = [];
     }
 
-    /**
-     * Updates elements values for rendering
-     * 
-     * @param mixed $value
-     * 
-     * @return IInputElement
-     * 
-     * @throws InvalidArgumentException
-     * @throws OutOfRangeException 
-     */
-    public function withValue(mixed $value): IInputElement
+    public function resolve(array $values): bool
     {
-        if (!$this->multiple && is_array($value)) {
-            throw new InvalidArgumentException(
-                "Select without multiple attribute can only have one selected value!"
-            );
-        }
-
-        if (!is_array($value)) {
-            throw new InvalidArgumentException(
-                "Select with multiple attribute must have an array of values!"
-            );
-        }
-
-        return $this;
-    }
-
-    /**
-     * Fills the select with possible Options
-     * 
-     * @var string[]|int[]|bool[] $values Keys will serve as a label for values, value if key is numeric
-     * 
-     * @return SelectElement
-     */
-    public function withOptions(array $options): SelectElement
-    {
-        $this->options = $options;
-        return $this;
+        if ($this->mul  )
     }
 
     public function __toString(): string
@@ -92,6 +62,11 @@ final class SelectElement implements IInputElement
 
             $options[] = $this->createOption($label, $value);
         }
+
+        return new SelectElement(
+            name: $this->getFullName(),
+            inputAttributes: $attributes
+        );
 
         return '<select' . $this->getAttributeString($attributes) . '>' . implode('', $options) . '</select>';
     }

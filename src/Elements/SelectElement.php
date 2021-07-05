@@ -16,45 +16,12 @@ final class SelectElement implements IInputElement
 
     public function __construct(
         string $name,
-        private bool $multiple = false,
-        array $attributes = [],
-        private array $optionAttributes = [],
-        private array $availableOptions = [],
-        private array $options,
-        private string|array|null $value = null
+        array $inputAttributes = [],
+        protected array $options = [],
     ) {
         $attributes["name"] = $name;
-        $this->attributes = $attributes;
+        $this->attributes = $inputAttributes;
         $this->options = [];
-    }
-
-    /**
-     * Updates elements values for rendering
-     * 
-     * @param mixed $value
-     * 
-     * @return IInputElement
-     * 
-     * @throws InvalidArgumentException
-     * @throws OutOfRangeException 
-     */
-    public function withValue(mixed $value): IInputElement
-    {
-        if (!$this->multiple && is_array($value)) {
-            throw new InvalidArgumentException(
-                "Select without multiple attribute can only have one selected value!"
-            );
-        }
-
-        if (!is_array($value)) {
-            throw new InvalidArgumentException(
-                "Select with multiple attribute must have an array of values!"
-            );
-        }
-
-        $this->value = $value;
-
-        return $this;
     }
 
     /**
@@ -70,52 +37,15 @@ final class SelectElement implements IInputElement
         return $this;
     }
 
-    public function __toString(): string
+    public function withValue(mixed $value): IInputElement
     {
-        $attributes = $this->attributes;
-        $attributes["multiple"] = $this->multiple;
-
-        $options = [];
-
-        foreach ($this->options as $label => $value) {
-            /** Check if this is a group */
-            if (is_array($value)) {
-                $options[] = new ContainerElement(
-                    tag: 'optgroup',
-                    attributes: ['label' => $label],
-                    nestedElements: array_map(
-                        [$this, "createOption"],
-                        array_keys($value),
-                        $value
-                    )
-                );
-                continue;
-            }
-
-            $options[] = $this->createOption($label, $value);
-        }
-
-        return '<select' . $this->getAttributeString($attributes) . '>' . implode('', $options) . '</select>';
+        $this->
     }
 
-    private function createOption(string $label, string $value): OptionElement
+    public function __toString(): string
     {
-        if (is_numeric($label)) {
-            $label = $value;
-        }
-
-        if ($this->multiple && is_array($this->value)) {
-            $selected = in_array($value, $this->value);
-        } else {
-            $selected = ($value === $this->value);
-        }
-
-        return new OptionElement(
-            value: $value,
-            optionText: $label,
-            attributes: $this->optionAttributes,
-            selected: $selected
-        );
+        return '<select' . $this->getAttributeString($this->attributes) . '>'
+                . implode('', $this->options) . '</select>';
     }
 
 }
