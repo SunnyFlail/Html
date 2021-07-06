@@ -37,6 +37,7 @@ final class InputField extends AbstractInputField
     public function getInputElement(): IElement
     {
         return new InputElement(
+            id: $this->getInputId(),
             type: $this->type,
             name: $this->getFullName(),
             attributes: $this->inputAttributes

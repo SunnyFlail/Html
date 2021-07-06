@@ -6,17 +6,18 @@ use SunnyFlail\Html\Elements\ContainerElement;
 use SunnyFlail\Html\Elements\LabelElement;
 use SunnyFlail\Html\Elements\OptionElement;
 use SunnyFlail\Html\Elements\SelectElement;
-use SunnyFlail\Html\Interfaces\IElement;
-use SunnyFlail\Html\Interfaces\IFieldElement;
+use SunnyFlail\Html\Elements\TextNodeElement;
+use SunnyFlail\Html\Interfaces\IInputField;
 use SunnyFlail\Html\Interfaces\ISelectableField;
 use SunnyFlail\Html\Traits\AttributeTrait;
 use SunnyFlail\Html\Traits\FieldTrait;
+use SunnyFlail\Html\Traits\InputFieldTrait;
 use SunnyFlail\Html\Traits\SelectableTrait;
 
-final class SelectField implements ISelectableField, IFieldElement
+final class SelectField implements ISelectableField, IInputField
 {
 
-    use AttributeTrait, SelectableTrait, FieldTrait;
+    use AttributeTrait, SelectableTrait, FieldTrait, InputFieldTrait;
     
     /** @var string[]|string[][] $options */
 
@@ -30,43 +31,50 @@ final class SelectField implements ISelectableField, IFieldElement
         protected array $optionAttributes = [],
         protected array $errorAttributes = [],
         protected array $options = [],
+        array $errorMessages = [],
         protected string|array|null $value = null
     ) {
         $this->error = null;
         $this->valid = false;
         $this->value = null;
+        $this->errorMessages = $errorMessages;
     }
 
     public function resolve(array $values): bool
     {
-        $values = $values[$this->getName()] ?? [];
+        $value = $values[$this->getName()] ?? null;
 
-        if ($this->multiple && is_array($values)) {
-            $values = array_intersect($this->options, $values);
+        if ($this->required && null === $value) {
+            $this->error = $this->resolveErrorMessage("-1");
 
-            if ($this->required && !$values) {
-                $this->error = $this->errorMessages["-1"] ?? "A value must be provided!";
-                $this->valid = false; 
+            return false;
+        }
+
+        if ($this->multiple && is_array($value)) {
+            $value = array_intersect($value, $this->option);
+
+            if (!$value) {
+                $this->error = $this->resolveErrorMessage("0");
             }
 
-            $this->value = $values;
-            return $this->valid = true;
+            return false;
         }
 
-        if (!in_array($values, $this->options) && $this->required) {
-            $this->error = $this->errorMessages["0"] ?? "Provided value is incorrect!";
+        if (!in_array($value, $this->options)) {
+            $this->error = $this->resolveErrorMessage("0");
 
-            return $this->valid;
+            return false;
         }
 
-        $this->value = $values;
+        $this->value = $value;
 
-        return $this->valid;
+        return $this->valid = true;
     }
 
     public function __toString(): string
     {
         $options = [];
+        
         foreach ($this->options as $label => $value) {
             /** Check if this is a group */
             if (is_array($value)) {
@@ -88,7 +96,12 @@ final class SelectField implements ISelectableField, IFieldElement
         $errors = [];
 
         if (null !== $this->error) {
-            $errors[] = new ContainerElement()
+            $errors[] = new ContainerElement(
+                attributes: $this->errorAttributes,
+                nestedElements: [
+                    new TextNodeElement($this->error)
+                ]
+            );
         }
 
         $inputId = $this->getInputId();
@@ -108,7 +121,8 @@ final class SelectField implements ISelectableField, IFieldElement
                     name: $this->getFullName(),
                     attributes: $this->inputAttributes,
                     options: $options
-                )
+                ),
+                ...$errors
             ]
         );
     }

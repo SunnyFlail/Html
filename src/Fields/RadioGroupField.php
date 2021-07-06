@@ -5,21 +5,16 @@ namespace SunnyFlail\Html\Fields;
 use SunnyFlail\Html\Elements\CheckableElement;
 use SunnyFlail\Html\Elements\ContainerElement;
 use SunnyFlail\Html\Elements\LabelElement;
-use SunnyFlail\Html\Elements\NodeElement;
-use SunnyFlail\Html\Interfaces\IElement;
-use SunnyFlail\Html\Interfaces\IFormElement;
+use SunnyFlail\Html\Interfaces\IInputField;
 use SunnyFlail\Html\Interfaces\ISelectableField;
 use SunnyFlail\Html\Traits\ContainerElementTrait;
 use SunnyFlail\Html\Traits\FieldTrait;
+use SunnyFlail\Html\Traits\InputFieldTrait;
 use SunnyFlail\Html\Traits\SelectableTrait;
 
-final class RadioGroupField implements ISelectableField
+final class RadioGroupField implements ISelectableField, IInputField
 {
-    use ContainerElementTrait, FieldTrait, SelectableTrait;
-
-    protected IFormElement $form;
-    protected ?string $error;
-    protected bool $valid;
+    use ContainerElementTrait, FieldTrait, SelectableTrait, InputFieldTrait;
 
     public function __construct(
         protected string $name,
@@ -30,6 +25,9 @@ final class RadioGroupField implements ISelectableField
         array $nestedElements = []
     )
     {
+        $this->error = null;
+        $this->value = null;
+        $this->
         $this->nestedElements = $nestedElements;
     }
 
@@ -45,7 +43,7 @@ final class RadioGroupField implements ISelectableField
         return $this->valid;
     }
 
-    public function getInputElement(): IElement
+    public function __toString(): string
     {
         $inputs = [];
         $name = $this->getFullName();
@@ -54,6 +52,7 @@ final class RadioGroupField implements ISelectableField
             if (is_numeric($label)) {
                 $label = $value;
             }
+
             $checked = $this->value === $value;
 
             $inputs[] = new LabelElement(
@@ -70,14 +69,9 @@ final class RadioGroupField implements ISelectableField
             );
         }
 
-        return new NodeElement($inputs);
-    }
-
-    public function __toString(): string
-    {
         return new ContainerElement(
             attributes: $this->containerAttributes,
-            nestedElements: [$this->getInputElement()]
+            nestedElements: $inputs
         );
     }
     

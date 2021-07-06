@@ -6,14 +6,16 @@ use SunnyFlail\Html\Elements\ContainerElement;
 use SunnyFlail\Html\Elements\LabelElement;
 use SunnyFlail\Html\Elements\TextNodeElement;
 use SunnyFlail\Html\Interfaces\IConstraint;
+use SunnyFlail\Html\Interfaces\IElement;
 use SunnyFlail\Html\Interfaces\IInputField;
 use SunnyFlail\Html\Traits\ContainerElementTrait;
 use SunnyFlail\Html\Traits\FieldTrait;
+use SunnyFlail\Html\Traits\InputFieldTrait;
 
 abstract class AbstractInputField implements IInputField
 {
 
-    use ContainerElementTrait, FieldTrait;
+    use ContainerElementTrait, FieldTrait, InputFieldTrait;
 
     /**
      * @param string $name Name of the field
@@ -46,14 +48,14 @@ abstract class AbstractInputField implements IInputField
 
         if ($value === null){
             if ($this->isRequired()) {
-                $this->error = $this->errorMessages["-1"] ?? "No value provided for field $this->name!";
+                $this->error = $this->resolveErrorMessage("-1");
             }
             return false;
         }
 
         foreach ($this->constraints as $index => $constraint) {
             if (false === $constraint->formValueValid($value)) {
-                $this->error = $this->errorMessages["$index"] ?? "Provided value doesn't fit the constraints!";
+                $this->error = $this->resolveErrorMessage("$index");
                 return false;
             }
         }
@@ -88,6 +90,12 @@ abstract class AbstractInputField implements IInputField
             nestedElements: $elements
         );
     }
-
+     
+    /**
+     * Returns the input element / node containing input elements
+     * 
+     * @return IElement
+     */
+    abstract public function getInputElement(): IElement;
 
 }

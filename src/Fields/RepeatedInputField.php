@@ -2,21 +2,20 @@
 
 namespace SunnyFlail\Html\Fields;
 
-use InvalidArgumentException;
 use SunnyFlail\Html\Interfaces\IFieldElement;
 use SunnyFlail\Html\Interfaces\IFormElement;
-use SunnyFlail\Html\Interfaces\IInputElement;
-use SunnyFlail\Html\InvalidFieldException;
+use SunnyFlail\Html\Interfaces\IInputField;
+use SunnyFlail\Html\Traits\FieldTrait;
 
-final class RepeatedField implements IFieldElement
+final class RepeatedInputField implements IFieldElement
 {
 
-    private bool $valid;
+    use FieldTrait;
 
     public function __construct(
-        private IFieldElement $field,
-        private IFieldElement $repeatedField,
-        private string $mismatchError = "Fields must match!"
+        private IInputField $field,
+        private IInputField $repeatedField,
+        protected array $missmatchError = "Fields must match!"
     ) {
         $this->valid = false;
     }
@@ -44,18 +43,8 @@ final class RepeatedField implements IFieldElement
         return $this->field->getName();
     }
 
-    public function isValid(): bool
-    {
-        return $this->valid;
-    }
-
     public function getValue()
     {
-        if (!$this->valid) {
-            throw new InvalidFieldException(
-                sprintf('Trying to get value of an invalid %s', static::class)
-            );
-        }
         return $this->field->getValue();
     }
 
@@ -70,6 +59,7 @@ final class RepeatedField implements IFieldElement
     {
         $this->field->resolve($values);
         $this->repeatedField->resolve($values);
+
         if ($this->field->getValue() === $this->repeatedField->getValue()) {
             $this->valid = true;
         } else {
