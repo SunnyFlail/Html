@@ -5,9 +5,10 @@ namespace SunnyFlail\Html\Elements;
 use SunnyFlail\Html\Interfaces\IFieldElement;
 use SunnyFlail\Html\Interfaces\IFileField;
 use SunnyFlail\Html\Interfaces\IFormElement;
-use SunnyFlail\Html\Traits\ElementTrait;
 use Psr\Http\Message\ServerRequestInterface;
 use ReflectionClass;
+use SunnyFlail\Html\Exceptions\InvalidFormException;
+use SunnyFlail\Html\Traits\AttributeTrait;
 
 /**
  * Abstraction over html forms with HTTP parameter resolving
@@ -15,12 +16,16 @@ use ReflectionClass;
 abstract class FormElement implements IFormElement
 {
 
-    use ElementTrait;
+    use AttributeTrait;
     
     /**
      * @var IFieldElement $fields
      */
     protected array $fields;
+    
+    protected array $attributes;
+
+    protected bool $initialised;
 
     protected string $formMethod;
 
@@ -88,9 +93,12 @@ abstract class FormElement implements IFormElement
         return $valid ?? null;
     }
 
-    public function withFields(IFieldElement ...$fields)
+    public function withFields(IFieldElement ...$fields): IFormElement
     {
         $this->fields = $fields;
+        $this->initialised = true;
+
+        return $this;
     }
 
     /**
@@ -102,6 +110,14 @@ abstract class FormElement implements IFormElement
      */
     public function __toString(): string
     {
+        if (!$this->initialised) {
+            throw new InvalidFormException(sprintf(
+                "Form %s with name %s isn't initalised!",
+                static::class,
+                $this->getName()
+            ));
+        }
+
         if (method_exists(static::class, "render")) {
             return $this->render();
         }

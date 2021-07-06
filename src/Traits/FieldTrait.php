@@ -36,6 +36,11 @@ trait FieldTrait
         return $this->form->getName() . '[' . $this->name . ']';
     }
 
+    public function getInputId(): string
+    {
+        return $this->form->getName() . "-"  . $this->name;
+    }
+
     public function withValue($value): IFieldElement
     {
         $this->value = $value;

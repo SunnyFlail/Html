@@ -47,6 +47,7 @@ final class PasswordField extends AbstractInputField
         if ($this->valid) {
             $attributes["value"] = $this->value;
         }
+        $id = $this->getInputId();
         if ($this->withPeeper) {
             return new ContainerElement(
                 attributes: [
@@ -54,6 +55,7 @@ final class PasswordField extends AbstractInputField
                 ],
                 nestedElements: [
                     new InputElement(
+                        id: $id,
                         type: "password",
                         name: $this->name,
                         attributes: $attributes
@@ -67,6 +69,7 @@ final class PasswordField extends AbstractInputField
         }
 
         return new InputElement(
+            id: $id,
             type: "password",
             name: $this->name,
             attributes: $attributes

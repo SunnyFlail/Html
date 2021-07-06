@@ -22,7 +22,8 @@ class ContainerElement implements IContainerElement
 
     public function __toString(): string
     {
-        return '<' . $this->tag . $this->getAttributeString($this->attributes) . '>' . implode('', $this->nestedElements) . '</'. $this->tag. '>';
+        return '<' . $this->tag . $this->getAttributeString($this->attributes) . '>'
+                . implode('', $this->nestedElements) . '</'. $this->tag. '>';
     }
 
 }

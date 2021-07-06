@@ -16,7 +16,6 @@ abstract class AbstractInputField implements IInputField
     use ContainerElementTrait, FieldTrait;
 
     /**
-     * 
      * @param string $name Name of the field
      * @param bool $required
      * @param array $attributes Attributes to be pa
@@ -26,26 +25,19 @@ abstract class AbstractInputField implements IInputField
      * @param IConstraint[] $constraints
      */
     public function __construct(
-        string $name,
-        bool $required = true,
+        protected string $name,
+        protected bool $required = true,
         protected array $errorMessages = [],
         protected array $wrapperAttributes = [],
         protected array $errorAttributes = [],
         protected ?string $labelText = null,
         protected array $labelAttributes = [],
-        array $nestedElements = [],
+        protected array $nestedElements = [],
         protected array $constraints = []
     ) {
-        $this->name = $name;
-        $this->required = $required;
         $this->error = null;
+        $this->value = null;
         $this->valid = false;
-        $this->nestedElements = $nestedElements;
-    }
-
-    public function getId(): string
-    {
-        return $this->form->getName() . "-"  . $this->name;
     }
 
     public function resolve(array $values): bool
@@ -72,7 +64,7 @@ abstract class AbstractInputField implements IInputField
 
     public function __toString(): string
     {
-        $inputId = $this->getId();
+        $inputId = $this->getInputId();
         $elements = [
             new LabelElement(
                 for: $inputId,

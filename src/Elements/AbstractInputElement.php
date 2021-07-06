@@ -12,12 +12,13 @@ abstract class AbstractInputElement implements IElement
 
     public function __construct(
         string $type,
-        ?string $name,
-        ?array $classes = null,
+        ?string $name = null,
+        string $id,        ?array $classes = null,
         bool $required = true,
         array $attributes = [],
     ) {
         $attributes["type"] = $type;
+        $attributes["id"] = $id;
         $attributes["name"] = $name;
         $attributes["classes"] = $classes;
         $attributes["required"] = $required;

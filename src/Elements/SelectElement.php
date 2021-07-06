@@ -2,44 +2,30 @@
 
 namespace SunnyFlail\Html\Elements;
 
-use OutOfRangeException;
-use InvalidArgumentException;
+use SunnyFlail\Html\Interfaces\IElement;
+use SunnyFlail\Html\Traits\AttributeTrait;
 use SunnyFlail\Html\Traits\ElementTrait;
-use SunnyFlail\Html\Interfaces\IInputElement;
 
-final class SelectElement implements IInputElement
+final class SelectElement implements IElement
 {
 
-    use ElementTrait;
+    use AttributeTrait;
     
     /** @var OptionElement[] $options */
 
     public function __construct(
         string $name,
-        array $inputAttributes = [],
+        string $id,
+        bool $required = true,
+        bool $multiple = false,
+        array $attributes = [],
         protected array $options = [],
     ) {
         $attributes["name"] = $name;
-        $this->attributes = $inputAttributes;
-        $this->options = [];
-    }
-
-    /**
-     * Fills the select with possible Options
-     * 
-     * @var string[]|int[]|bool[] $values Keys will serve as a label for values, value if key is numeric
-     * 
-     * @return SelectElement
-     */
-    public function withOptions(array $options): SelectElement
-    {
-        $this->options = $options;
-        return $this;
-    }
-
-    public function withValue(mixed $value): IInputElement
-    {
-        $this->
+        $attributes["id"] = $id;
+        $attributes["required"] = $required;
+        $attributes["multiple"] = $multiple;
+        $this->attributes = $attributes;
     }
 
     public function __toString(): string

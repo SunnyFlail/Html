@@ -2,49 +2,71 @@
 
 namespace SunnyFlail\Html\Fields;
 
-use OutOfRangeException;
-use InvalidArgumentException;
+use SunnyFlail\Html\Elements\ContainerElement;
+use SunnyFlail\Html\Elements\LabelElement;
+use SunnyFlail\Html\Elements\OptionElement;
 use SunnyFlail\Html\Elements\SelectElement;
+use SunnyFlail\Html\Interfaces\IElement;
 use SunnyFlail\Html\Interfaces\IFieldElement;
-use SunnyFlail\Html\Traits\ElementTrait;
-use SunnyFlail\Html\Interfaces\IInputElement;
 use SunnyFlail\Html\Interfaces\ISelectableField;
+use SunnyFlail\Html\Traits\AttributeTrait;
 use SunnyFlail\Html\Traits\FieldTrait;
 use SunnyFlail\Html\Traits\SelectableTrait;
 
 final class SelectField implements ISelectableField, IFieldElement
 {
 
-    use ElementTrait, SelectableTrait, FieldTrait;
+    use AttributeTrait, SelectableTrait, FieldTrait;
     
-    /** @var OptionElement[] $options */
-    private array $options;
+    /** @var string[]|string[][] $options */
 
     public function __construct(
-        string $name,
+        protected string $name,
         protected bool $multiple = false,
-        array $attributes = [],
+        protected bool $required = false,
+        protected array $inputAttributes = [],
+        protected ?string $labelText = null,
+        protected array $labelAttributes = [],
         protected array $optionAttributes = [],
-        protected array $availableOptions = [],
+        protected array $errorAttributes = [],
+        protected array $options = [],
         protected string|array|null $value = null
     ) {
-        $attributes["name"] = $name;
-        $this->attributes = $attributes;
-        $this->options = [];
+        $this->error = null;
+        $this->valid = false;
+        $this->value = null;
     }
 
     public function resolve(array $values): bool
     {
-        if ($this->mul  )
+        $values = $values[$this->getName()] ?? [];
+
+        if ($this->multiple && is_array($values)) {
+            $values = array_intersect($this->options, $values);
+
+            if ($this->required && !$values) {
+                $this->error = $this->errorMessages["-1"] ?? "A value must be provided!";
+                $this->valid = false; 
+            }
+
+            $this->value = $values;
+            return $this->valid = true;
+        }
+
+        if (!in_array($values, $this->options) && $this->required) {
+            $this->error = $this->errorMessages["0"] ?? "Provided value is incorrect!";
+
+            return $this->valid;
+        }
+
+        $this->value = $values;
+
+        return $this->valid;
     }
 
     public function __toString(): string
     {
-        $attributes = $this->attributes;
-        $attributes["multiple"] = $this->multiple;
-
         $options = [];
-
         foreach ($this->options as $label => $value) {
             /** Check if this is a group */
             if (is_array($value)) {
@@ -63,12 +85,32 @@ final class SelectField implements ISelectableField, IFieldElement
             $options[] = $this->createOption($label, $value);
         }
 
-        return new SelectElement(
-            name: $this->getFullName(),
-            inputAttributes: $attributes
-        );
+        $errors = [];
 
-        return '<select' . $this->getAttributeString($attributes) . '>' . implode('', $options) . '</select>';
+        if (null !== $this->error) {
+            $errors[] = new ContainerElement()
+        }
+
+        $inputId = $this->getInputId();
+
+        return new ContainerElement(
+            attributes: $this->containerAttibutes,
+            nestedElements: [
+                new LabelElement(
+                    for: $inputId,
+                    labelText: $this->labelText ?? $this->name,
+                    attributes: $this->labelAttributes
+                ),
+                new SelectElement(
+                    id: $inputId,
+                    required: $this->required,
+                    multiple: $this->multiple,
+                    name: $this->getFullName(),
+                    attributes: $this->inputAttributes,
+                    options: $options
+                )
+            ]
+        );
     }
 
     private function createOption(string $label, string $value): OptionElement

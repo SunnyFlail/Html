@@ -10,8 +10,7 @@ final class LabelElement extends ContainerElement
         ?string $labelText = null,
         array $attributes = [],
         array $nestedElements = []
-    )
-    {
+    ) {
         $attributes["for"] = $for;
 
         if ($labelText) {
@@ -24,6 +23,5 @@ final class LabelElement extends ContainerElement
             nestedElements: $nestedElements
         );
     }
-
 
 }

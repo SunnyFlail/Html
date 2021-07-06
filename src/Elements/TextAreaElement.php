@@ -2,27 +2,21 @@
 
 namespace SunnyFlail\Html\Elements;
 
-use SunnyFlail\Html\Interfaces\IInputElement;
-use SunnyFlail\Html\Traits\ElementTrait;
+use SunnyFlail\Html\Interfaces\IElement;
+use SunnyFlail\Html\Traits\AttributeTrait;
 
-final class TextAreaElement implements IInputElement
+final class TextAreaElement implements IElement
 {
 
-    use ElementTrait;
+    use AttributeTrait;
 
     public function __construct(
         string $name,
+        array $attributes = [],
         private ?string $value = null,
-        array $attributes = []
     ) {
         $attributes["name"] = $name;
         $this->$attributes = $attributes;
-    }
-
-    public function withValue(mixed $value): IInputElement
-    {
-        $this->value = $value;
-        return $this;
     }
 
     public function __toString(): string

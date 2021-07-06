@@ -27,9 +27,10 @@ final class RepeatedField implements IFieldElement
         return $this;
     }
 
-    public function withValue(mixed $value): IInputElement
+    public function withValue(mixed $value): IFieldElement
     {
         $this->field->withValue($value);
+        $this->repeatedField->withValue($value);
         return $this;
     }
 

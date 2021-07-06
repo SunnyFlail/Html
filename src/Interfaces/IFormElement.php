@@ -9,19 +9,25 @@ use Psr\Http\Message\ServerRequestInterface;
  */
 interface IFormElement extends IElement
 {
-    
+    /**
+     * Returns the name of the form
+     * 
+     * @return string
+     */
     public function getName(): string;
 
     /**
      * Resolves the form
      * 
-     * @return bool If provided values fit in with 
+     * @return bool
      */
     public function resolveForm(ServerRequestInterface $request): bool;
 
     /**
-     * Basic function called during setup of the form
+     * The main initalisation method
+     * 
+     * @return IFormElement $this
      */
-    public function withFields(IFieldElement ...$fields);
+    public function withFields(IFieldElement ...$fields): IFormElement;
 
 }

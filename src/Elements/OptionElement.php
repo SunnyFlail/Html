@@ -3,12 +3,12 @@
 namespace SunnyFlail\Html\Elements;
 
 use SunnyFlail\Html\Interfaces\IElement;
-use SunnyFlail\Html\Traits\ElementTrait;
+use SunnyFlail\Html\Traits\AttributeTrait;
 
 final class OptionElement implements IElement
 {
 
-    use ElementTrait;
+    use AttributeTrait;
 
     protected TextNodeElement $textNode;
 
@@ -23,17 +23,6 @@ final class OptionElement implements IElement
         $attributes["selected"] = $selected;
         $attributes["value"] = $value;
         $this->attributes = $attributes;
-    }
-
-    public function getValue(): string
-    {
-        return  $this->attributes["value"];
-    }
-
-    public function setSelected(): OptionElement
-    {
-        $this->attributes["selected"] = true;
-        return $this;
     }
 
     public function __toString(): string

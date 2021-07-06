@@ -41,6 +41,7 @@ final class EmailField extends AbstractInputField
         $attributes['maxlength'] = 254;
 
         return new InputElement(
+            id: $this->getInputId(),
             type: 'email',
             name: $this->name,
             attributes: $attributes

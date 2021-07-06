@@ -7,6 +7,7 @@ final class FileElement extends AbstractInputElement
 
     public function __construct(
         string $name,
+        string $id,
         array $acceptedMimeTypes = [],
         bool $multiple = true,
         array $classes = [],
@@ -18,6 +19,7 @@ final class FileElement extends AbstractInputElement
 
         parent::__construct(
             type: "file",
+            id: $id,
             name: $name,
             classes: $classes,
             attributes: $attributes
