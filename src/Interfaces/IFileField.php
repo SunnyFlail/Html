@@ -2,17 +2,10 @@
 
 namespace SunnyFlail\Html\Interfaces;
 
-use Psr\Http\Message\UploadedFileInterface;
-
+/** 
+ * Basic interface for file upload fields
+ */
 interface IFileField extends IFieldElement
 {
-
-    /**
-     * Checks whether uploaded files fullfill imposed constraints
-     * 
-     * @var UploadedFileInterface[] $files
-     * 
-     */
-    public function checkFiles(array $files);
 
 }

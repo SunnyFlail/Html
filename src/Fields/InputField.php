@@ -34,7 +34,7 @@ final class InputField extends AbstractInputField
         $this->constraints = [];
     }
 
-    public function getInputElement(): IElement
+    protected function getInputElement(): IElement
     {
         return new InputElement(
             id: $this->getInputId(),

@@ -13,24 +13,11 @@ final class RepeatedInputField implements IFieldElement
     use FieldTrait;
 
     public function __construct(
-        private IInputField $field,
-        private IInputField $repeatedField,
-        protected array $missmatchError = "Fields must match!"
+        protected IInputField $field,
+        protected IInputField $repeatedField,
+        protected string $missmatchError = "Fields must match!"
     ) {
         $this->valid = false;
-    }
-
-    public function withError(string $error): IFieldElement
-    {
-        $this->field->withError($error);
-        return $this;
-    }
-
-    public function withValue(mixed $value): IFieldElement
-    {
-        $this->field->withValue($value);
-        $this->repeatedField->withValue($value);
-        return $this;
     }
 
     public function isRequired(): bool
@@ -46,6 +33,19 @@ final class RepeatedInputField implements IFieldElement
     public function getValue()
     {
         return $this->field->getValue();
+    }
+
+    public function withError(string $error): IFieldElement
+    {
+        $this->field->withError($error);
+        return $this;
+    }
+
+    public function withValue(mixed $value): IFieldElement
+    {
+        $this->field->withValue($value);
+        $this->repeatedField->withValue($value);
+        return $this;
     }
 
     public function withForm(IFormElement $form): IFieldElement

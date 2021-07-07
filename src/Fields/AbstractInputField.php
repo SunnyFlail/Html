@@ -96,6 +96,6 @@ abstract class AbstractInputField implements IInputField
      * 
      * @return IElement
      */
-    abstract public function getInputElement(): IElement;
+    abstract protected function getInputElement(): IElement;
 
 }

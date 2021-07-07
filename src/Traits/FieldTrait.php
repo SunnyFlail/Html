@@ -10,9 +10,12 @@ use SunnyFlail\Html\Interfaces\IFormElement;
  */
 trait FieldTrait
 {
-
+    /** @var IFormElement Reference to parent form elemetn */
     protected IFormElement $form;
+
+    /** @var bool $valid */
     protected bool $valid;
+
     /** @var string|null $error Message that is shown if this field is invalid */
     protected ?string $error;
 

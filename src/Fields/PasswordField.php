@@ -41,7 +41,7 @@ final class PasswordField extends AbstractInputField
         }
     }
 
-    public function getInputElement(): IElement
+    protected function getInputElement(): IElement
     {
         $attributes = $this->inputAttributes;
         if ($this->valid) {

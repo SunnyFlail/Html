@@ -34,7 +34,7 @@ final class EmailField extends AbstractInputField
         );
     }
 
-    public function getInputElement(): IElement
+    protected function getInputElement(): IElement
     {
         $attributes = $this->inputAttributes;
         $attributes['minlength'] = 5;
