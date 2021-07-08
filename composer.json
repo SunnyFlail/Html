@@ -17,6 +17,8 @@
         }
     ],
     "autoload": {
-        "SunnyFlail\\Html\\" : "src"
+        "psr-4": {
+            "SunnyFlail\\Html\\" : "src"
+        }
     }
 }
