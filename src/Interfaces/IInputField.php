@@ -33,7 +33,7 @@ interface IInputField extends IFieldElement
      * 
      * @return string
      */
-    public function resolveErrorMessage(string|int $code): string;
+    public function resolveErrorMessage(string $code): string;
 
     
 }
