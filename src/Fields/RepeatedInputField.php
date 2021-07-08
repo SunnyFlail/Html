@@ -18,6 +18,7 @@ final class RepeatedInputField implements IFieldElement
         protected string $missmatchError = "Fields must match!"
     ) {
         $this->valid = false;
+        $this->error = null;
     }
 
     public function isRequired(): bool

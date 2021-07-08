@@ -5,16 +5,26 @@ namespace SunnyFlail\Html\Traits;
 use SunnyFlail\Html\Interfaces\IFieldElement;
 
 /**
- * Trait extending FieldTrait for classes implementing IInputField interface
+ * Trait for classes implementing IInputField interface
  */
 trait InputFieldTrait
 {
-    /** @var string $name Name of the input element */
+    /**
+     * @var string $name Name of the input element
+     */
     protected string $name;
-    /** @var bool $required Boolean indicating whether this field is required */
+    /**
+     * @var bool $required Boolean indicating whether this field is required
+     */
     protected bool $required;
-    /** @var mixed $value Value of the field */
+    /**
+     * @var mixed $value Value of the field
+     */
     protected mixed $value;
+    /**
+     * @var string[] $errorMessages Messages to display if a constraint fails.
+     */
+    protected array $errorMessages;
 
     public function getName(): string
     {

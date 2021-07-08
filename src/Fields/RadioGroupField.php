@@ -23,8 +23,7 @@ final class RadioGroupField implements ISelectableField, IInputField
         protected array $wrapperAttributes = [],
         protected array $labelAttributes = [],
         array $nestedElements = []
-    )
-    {
+    ) {
         $this->error = null;
         $this->value = null;
         $this->

@@ -10,14 +10,25 @@ use SunnyFlail\Html\Interfaces\IFormElement;
  */
 trait FieldTrait
 {
-    /** @var IFormElement Reference to parent form elemetn */
+    /**
+     * @var IFormElement Reference to parent form
+     */
     protected IFormElement $form;
 
-    /** @var bool $valid */
+    /**
+     * @var bool $valid
+     */
     protected bool $valid;
 
-    /** @var string|null $error Message that is shown if this field is invalid */
+    /**
+     * @var string|null $error Message that is shown if this field is invalid
+     */
     protected ?string $error;
+
+    /**
+     * @var bool $required Bool indicating whether this field needs to be valid
+     */
+    protected bool $required;
 
     public function isValid(): bool
     {

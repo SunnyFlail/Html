@@ -2,6 +2,9 @@
 
 namespace SunnyFlail\Html\Traits;
 
+/**
+ * Basic trait for classes implementing IElement interface
+ */
 trait AttributeTrait
 {
     /**

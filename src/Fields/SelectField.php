@@ -24,18 +24,18 @@ final class SelectField implements ISelectableField, IInputField
     public function __construct(
         protected string $name,
         protected bool $multiple = false,
-        protected bool $required = false,
+        bool $required = false,
         protected array $inputAttributes = [],
         protected ?string $labelText = null,
         protected array $labelAttributes = [],
         protected array $optionAttributes = [],
         protected array $errorAttributes = [],
         protected array $options = [],
-        array $errorMessages = [],
-        protected string|array|null $value = null
+        array $errorMessages = []
     ) {
         $this->error = null;
         $this->valid = false;
+        $this->required = $required;
         $this->value = null;
         $this->errorMessages = $errorMessages;
     }
@@ -93,10 +93,26 @@ final class SelectField implements ISelectableField, IInputField
             $options[] = $this->createOption($label, $value);
         }
 
-        $errors = [];
+        $elements = [];
+        $inputId = $this->getInputId();
+
+        $elements[] = new LabelElement(
+            for: $inputId,
+            labelText: $this->labelText ?? $this->name,
+            attributes: $this->labelAttributes
+        );
+
+        $elements[] = new SelectElement(
+            id: $inputId,
+            required: $this->required,
+            multiple: $this->multiple,
+            name: $this->getFullName(),
+            attributes: $this->inputAttributes,
+            options: $options
+        );
 
         if (null !== $this->error) {
-            $errors[] = new ContainerElement(
+            $elements[] = new ContainerElement(
                 attributes: $this->errorAttributes,
                 nestedElements: [
                     new TextNodeElement($this->error)
@@ -104,26 +120,10 @@ final class SelectField implements ISelectableField, IInputField
             );
         }
 
-        $inputId = $this->getInputId();
 
         return new ContainerElement(
             attributes: $this->containerAttibutes,
-            nestedElements: [
-                new LabelElement(
-                    for: $inputId,
-                    labelText: $this->labelText ?? $this->name,
-                    attributes: $this->labelAttributes
-                ),
-                new SelectElement(
-                    id: $inputId,
-                    required: $this->required,
-                    multiple: $this->multiple,
-                    name: $this->getFullName(),
-                    attributes: $this->inputAttributes,
-                    options: $options
-                ),
-                ...$errors
-            ]
+            nestedElements: $elements
         );
     }
 

@@ -5,8 +5,11 @@ namespace SunnyFlail\Html\Interfaces;
 interface IContainerElement extends IElement
 {
 
-    public function getNestedElements(): array;
-
+    /**
+     * Add a new element at the end of container
+     * 
+     * @return IContainerElement $this
+     */
     public function withAddedNestedElements(IElement ...$Elements): IContainerElement;
 
 }

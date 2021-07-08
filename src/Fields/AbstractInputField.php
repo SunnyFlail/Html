@@ -28,18 +28,21 @@ abstract class AbstractInputField implements IInputField
      */
     public function __construct(
         protected string $name,
-        protected bool $required = true,
-        protected array $errorMessages = [],
+        bool $required = true,
         protected array $wrapperAttributes = [],
         protected array $errorAttributes = [],
         protected ?string $labelText = null,
         protected array $labelAttributes = [],
-        protected array $nestedElements = [],
+        array $errorMessages = [],
+        array $nestedElements = [],
         protected array $constraints = []
     ) {
         $this->error = null;
         $this->value = null;
         $this->valid = false;
+        $this->required = $required;
+        $this->errorMessages = $errorMessages;
+        $this->nestedElements = $nestedElements;
     }
 
     public function resolve(array $values): bool

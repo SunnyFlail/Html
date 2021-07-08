@@ -4,6 +4,9 @@ namespace SunnyFlail\Html\Traits;
 
 use SunnyFlail\Html\Interfaces\ISelectableField;
 
+/**
+ * Trait for classes implementing ISelectableField interface
+ */
 trait SelectableTrait
 {
 
