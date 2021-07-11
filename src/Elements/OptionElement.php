@@ -1,9 +1,9 @@
 <?php
 
-namespace SunnyFlail\Html\Elements;
+namespace SunnyFlail\HtmlAbstraction\Elements;
 
-use SunnyFlail\Html\Interfaces\IElement;
-use SunnyFlail\Html\Traits\AttributeTrait;
+use SunnyFlail\HtmlAbstraction\Interfaces\IElement;
+use SunnyFlail\HtmlAbstraction\Traits\AttributeTrait;
 
 final class OptionElement implements IElement
 {

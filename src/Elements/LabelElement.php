@@ -1,6 +1,6 @@
 <?php
 
-namespace SunnyFlail\Html\Elements;
+namespace SunnyFlail\HtmlAbstraction\Elements;
 
 final class LabelElement extends ContainerElement
 {

@@ -1,15 +1,15 @@
 <?php
 
-namespace SunnyFlail\Html\Elements;
+namespace SunnyFlail\HtmlAbstraction\Elements;
 
-use SunnyFlail\Html\Interfaces\IElement;
+use SunnyFlail\HtmlAbstraction\Interfaces\IElement;
 
 class InputElement extends AbstractInputElement implements IElement
 {
 
     public function __construct(
+        ?string $id = null,
         string $type = "text",
-        string $id,
         ?string $name = null,
         ?array $classes = null,
         bool $required = true,

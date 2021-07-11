@@ -1,6 +1,6 @@
 <?php
 
-namespace SunnyFlail\Html\Traits;
+namespace SunnyFlail\HtmlAbstraction\Traits;
 
 /**
  * Basic trait for classes implementing IElement interface

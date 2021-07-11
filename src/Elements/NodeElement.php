@@ -1,10 +1,10 @@
 <?php
 
-namespace SunnyFlail\Html\Elements;
+namespace SunnyFlail\HtmlAbstraction\Elements;
 
-use SunnyFlail\Html\Interfaces\IContainerElement;
-use SunnyFlail\Html\Interfaces\IElement;
-use SunnyFlail\Html\Traits\ContainerElementTrait;
+use SunnyFlail\HtmlAbstraction\Interfaces\IContainerElement;
+use SunnyFlail\HtmlAbstraction\Interfaces\IElement;
+use SunnyFlail\HtmlAbstraction\Traits\ContainerElementTrait;
 
 /**
  * Representation of multiple elements

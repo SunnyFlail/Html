@@ -1,9 +1,9 @@
 <?php
 
-namespace SunnyFlail\Html\Elements;
+namespace SunnyFlail\HtmlAbstraction\Elements;
 
-use SunnyFlail\Html\Interfaces\IElement;
-use SunnyFlail\Html\Traits\ElementTrait;
+use SunnyFlail\HtmlAbstraction\Interfaces\IElement;
+use SunnyFlail\HtmlAbstraction\Traits\ElementTrait;
 
 final class ImageElement implements IElement
 {

@@ -1,10 +1,11 @@
 <?php
 
-namespace SunnyFlail\Html\Elements;
+namespace SunnyFlail\HtmlAbstraction\Elements;
 
 final class CheckableElement extends InputElement
 {
     public function __construct(
+        string $id,
         ?string $name = null,
         bool $radio = false,
         bool $checked = false,
@@ -16,6 +17,7 @@ final class CheckableElement extends InputElement
         $attributes["checked"] = $checked;
         $type = $radio ? "radio" : "checkbox";
         parent::__construct(
+            id: $id,
             type: $type,
             name: $name,
             classes: $classes,

@@ -1,8 +1,8 @@
 <?php
 
-namespace SunnyFlail\Html\Elements;
+namespace SunnyFlail\HtmlAbstraction\Elements;
 
-use SunnyFlail\Html\Elements\ContainerElement;
+use SunnyFlail\HtmlAbstraction\Elements\ContainerElement;
 
 final class AnchorElement extends ContainerElement
 {

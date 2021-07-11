@@ -1,10 +1,10 @@
 <?php
 
-namespace SunnyFlail\Html\Elements;
+namespace SunnyFlail\HtmlAbstraction\Elements;
 
-use SunnyFlail\Html\Interfaces\IContainerElement;
-use SunnyFlail\Html\Traits\ContainerElementTrait;
-use SunnyFlail\Html\Traits\ElementTrait;
+use SunnyFlail\HtmlAbstraction\Interfaces\IContainerElement;
+use SunnyFlail\HtmlAbstraction\Traits\ContainerElementTrait;
+use SunnyFlail\HtmlAbstraction\Traits\ElementTrait;
 
 class ContainerElement implements IContainerElement
 {

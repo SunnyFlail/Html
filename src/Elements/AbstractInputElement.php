@@ -1,9 +1,9 @@
 <?php
 
-namespace SunnyFlail\Html\Elements;
+namespace SunnyFlail\HtmlAbstraction\Elements;
 
-use SunnyFlail\Html\Interfaces\IElement;
-use SunnyFlail\Html\Traits\ElementTrait;
+use SunnyFlail\HtmlAbstraction\Interfaces\IElement;
+use SunnyFlail\HtmlAbstraction\Traits\ElementTrait;
 
 abstract class AbstractInputElement implements IElement
 {
@@ -12,8 +12,9 @@ abstract class AbstractInputElement implements IElement
 
     public function __construct(
         string $type,
+        string $id,
         ?string $name = null,
-        string $id,        ?array $classes = null,
+        ?array $classes = null,
         bool $required = true,
         array $attributes = [],
     ) {

@@ -1,9 +1,9 @@
 <?php
 
-namespace SunnyFlail\Html\Traits;
+namespace SunnyFlail\HtmlAbstraction\Traits;
 
-use SunnyFlail\Html\Interfaces\IContainerElement;
-use SunnyFlail\Html\Interfaces\IElement;
+use SunnyFlail\HtmlAbstraction\Interfaces\IContainerElement;
+use SunnyFlail\HtmlAbstraction\Interfaces\IElement;
 
 /**
  * A trait for classes implementing IContainerElement interface

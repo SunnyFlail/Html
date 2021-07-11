@@ -1,6 +1,6 @@
 <?php
 
-namespace SunnyFlail\Html\Interfaces;
+namespace SunnyFlail\HtmlAbstraction\Interfaces;
 
 interface IContainerElement extends IElement
 {

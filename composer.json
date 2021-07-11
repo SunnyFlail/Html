@@ -1,6 +1,6 @@
 {
     "name": "sunnyflail/html-abstraction",
-    "description": "A simple HTML abstraction layer with basic Form API",
+    "description": "A simple HTML abstraction layer",
     "type": "library",
     "require": {
         "php": "^8",
@@ -18,7 +18,10 @@
     ],
     "autoload": {
         "psr-4": {
-            "SunnyFlail\\Html\\" : "src"
+            "SunnyFlail\\HtmlAbstraction\\" : "src"
         }
+    },
+    "config": {
+        "classmap-authoritative": true
     }
 }
