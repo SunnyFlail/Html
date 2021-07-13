@@ -3,13 +3,13 @@
 namespace SunnyFlail\HtmlAbstraction\Elements;
 
 use SunnyFlail\HtmlAbstraction\Interfaces\IContainerElement;
+use SunnyFlail\HtmlAbstraction\Traits\AttributeTrait;
 use SunnyFlail\HtmlAbstraction\Traits\ContainerElementTrait;
-use SunnyFlail\HtmlAbstraction\Traits\ElementTrait;
 
 class ContainerElement implements IContainerElement
 {
 
-    use ElementTrait, ContainerElementTrait;
+    use AttributeTrait, ContainerElementTrait;
 
     public function __construct(
         array $attributes,

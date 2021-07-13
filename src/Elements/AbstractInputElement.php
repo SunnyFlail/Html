@@ -3,12 +3,12 @@
 namespace SunnyFlail\HtmlAbstraction\Elements;
 
 use SunnyFlail\HtmlAbstraction\Interfaces\IElement;
-use SunnyFlail\HtmlAbstraction\Traits\ElementTrait;
+use SunnyFlail\HtmlAbstraction\Traits\AttributeTrait;
 
 abstract class AbstractInputElement implements IElement
 {
 
-    use ElementTrait;
+    use AttributeTrait;
 
     public function __construct(
         string $type,

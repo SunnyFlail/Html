@@ -4,7 +4,6 @@ namespace SunnyFlail\HtmlAbstraction\Elements;
 
 use SunnyFlail\HtmlAbstraction\Interfaces\IElement;
 use SunnyFlail\HtmlAbstraction\Traits\AttributeTrait;
-use SunnyFlail\HtmlAbstraction\Traits\ElementTrait;
 
 final class SelectElement implements IElement
 {
