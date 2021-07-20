@@ -11,11 +11,17 @@ final class TextAreaElement implements IElement
     use AttributeTrait;
 
     public function __construct(
+        ?string $id = null,
         string $name,
+        bool $required = true,
         array $attributes = [],
+        ?array $classes = null,
         private ?string $value = null,
     ) {
+        $attributes["id"] = $id;
         $attributes["name"] = $name;
+        $attributes["required"] = $required;
+        $attributes["classes"] = $classes;
         $this->$attributes = $attributes;
     }
 
