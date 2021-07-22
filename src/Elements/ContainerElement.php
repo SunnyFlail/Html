@@ -10,12 +10,14 @@ class ContainerElement implements IContainerElement
 {
 
     use AttributeTrait, ContainerElementTrait;
+    protected string $tag;
 
     public function __construct(
         array $attributes,
         array $nestedElements,
-        protected string $tag = 'div',
+        string $tag = 'div',
     ) {
+        $this->tag = $tag;
         $this->attributes = $attributes;
         $this->nestedElements = $nestedElements;
     }

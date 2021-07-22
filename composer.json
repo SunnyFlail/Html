@@ -3,7 +3,6 @@
     "description": "A simple HTML abstraction layer",
     "type": "library",
     "require": {
-        "php": "^8",
         "psr/http-message": "^1.0"
     },
     "require-dev": {

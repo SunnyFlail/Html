@@ -11,6 +11,7 @@ final class SelectElement implements IElement
     use AttributeTrait;
     
     /** @var OptionElement[] $options */
+    protected array $options;
 
     public function __construct(
         string $name,
@@ -18,12 +19,13 @@ final class SelectElement implements IElement
         bool $required = true,
         bool $multiple = false,
         array $attributes = [],
-        protected array $options = [],
+        array $options = [],
     ) {
         $attributes["name"] = $name;
         $attributes["id"] = $id;
         $attributes["required"] = $required;
         $attributes["multiple"] = $multiple;
+        $this->options = $options;
         $this->attributes = $attributes;
     }
 

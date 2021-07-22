@@ -6,8 +6,11 @@ use SunnyFlail\HtmlAbstraction\Interfaces\IElement;
 
 final class TextNodeElement implements IElement
 {
-
-    public function __construct(private string $text) {}
+    private string $text;
+    
+    public function __construct(string $text) {
+        $this->text = $text;
+    }
 
     public function __toString()
     {

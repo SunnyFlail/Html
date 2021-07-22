@@ -9,6 +9,7 @@ final class TextAreaElement implements IElement
 {
 
     use AttributeTrait;
+    private ?string $value;
 
     public function __construct(
         ?string $id = null,
@@ -16,13 +17,14 @@ final class TextAreaElement implements IElement
         bool $required = true,
         array $attributes = [],
         ?array $classes = null,
-        private ?string $value = null,
+        ?string $value = null,
     ) {
         $attributes["id"] = $id;
         $attributes["name"] = $name;
         $attributes["required"] = $required;
         $attributes["classes"] = $classes;
         $this->$attributes = $attributes;
+        $this->$value = $value;
     }
 
     public function __toString(): string
