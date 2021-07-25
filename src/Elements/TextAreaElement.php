@@ -23,8 +23,8 @@ final class TextAreaElement implements IElement
         $attributes["name"] = $name;
         $attributes["required"] = $required;
         $attributes["classes"] = $classes;
-        $this->$attributes = $attributes;
-        $this->$value = $value;
+        $this->attributes = $attributes;
+        $this->value = $value;
     }
 
     public function __toString(): string
